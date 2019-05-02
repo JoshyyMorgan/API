@@ -12,9 +12,9 @@ app.use(bodyParser.json());
 
 // Create a database variable outside of the database connection callback to reuse the connection pool in your app.
 var db;
-
+const dev_url = 'mongodb://john:123@cluster0-shard-00-00-mpnlo.mongodb.net:27017,cluster0-shard-00-01-mpnlo.mongodb.net:27017,cluster0-shard-00-02-mpnlo.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true'
 // Connect to the database before starting the application server.
-mongodb.MongoClient.connect(process.env.MONGODB_URI, function (err, database) {
+mongodb.MongoClient.connect(dev_url, function (err, database) {
   if (err) {
     console.log(err);
     process.exit(1);
