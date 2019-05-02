@@ -28,7 +28,7 @@ angular.module("contactsApp", ['ngRoute'])
                 then(function(response) {
                     return response;
                 }, function(error) {
-                    alert(error);
+                    console.log(error)
                 });
         }
         this.createContact = function(contact) {
