@@ -27,8 +27,8 @@ angular.module("contactsApp", ['ngRoute'])
             return $http.get("/contacts").
                 then(function(response) {
                     return response;
-                }, function(response) {
-                    alert("Error finding contacts.");
+                }, function(error) {
+                    alert(error);
                 });
         }
         this.createContact = function(contact) {
