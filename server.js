@@ -31,20 +31,13 @@ mongodb.MongoClient.connect(dev_url, function (err, database) {
   });
 });
 
-// ads API ROUTES BELOW
 
-// Generic error handler used by all endpoints.
 function handleError(res, reason, message, code) {
   console.log("ERROR: " + reason);
   res.status(code || 500).json({"error": message});
 }
 
-/*  "/ads"
- *    GET: finds all ads
- *    POST: creates a new ad
- */
-
-app.get("/", function(req, res) {
+app.get("/ads", function(req, res) {
   db.collection(ADS_COLLECTION).find({}).toArray(function(err, docs) {
     if (err) {
       handleError(res, err.message, "Failed to get ads.");
@@ -66,12 +59,6 @@ app.post("/ads", function(req, res) {
     }
   });
 });
-
-/*  "/ads/:id"
- *    GET: find contact by id
- *    PUT: update contact by id
- *    DELETE: deletes contact by id
- */
 
 app.get("/ads/:id", function(req, res) {
   db.collection(ADS_COLLECTION).findOne({ _id: new ObjectID(req.params.id) }, function(err, doc) {
