@@ -99,7 +99,7 @@ app.delete("/ads/:id", function(req, res) {
 //=========  Project  =========
 
 app.get("/project", function(req,res){
-  db.collection(PROJECT_COLLECTION).find({}).toArray(function(err,doc){
+  db.collection(PROJECT_COLLECTION).find({}).toArray(function(err,docs){
     if (err) {
       handleError(res, err.message, "Failed to get projects.");
     } else {
@@ -108,7 +108,7 @@ app.get("/project", function(req,res){
   })
 })
 
-app.get("/project", function(req,res){
+app.post("/project", function(req,res){
   var newProject = req.body;
   newProject.createDate = new Date()
   db.collection(PROJECT_COLLECTION).insertOne(newProject, function(err,doc){
