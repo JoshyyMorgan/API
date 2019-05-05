@@ -5,7 +5,7 @@ var mongodb = require("mongodb");
 var ObjectID = mongodb.ObjectID;
 
 var ADS_COLLECTION = "ads";
-var PROJECT_COLLECTION = 'project'
+var PROJECT_COLLECTION = 'project';
 
 var app = express();
 app.use(express.static(__dirname + "/public"));
