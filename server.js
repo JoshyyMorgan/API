@@ -5,6 +5,7 @@ var mongodb = require("mongodb");
 var ObjectID = mongodb.ObjectID;
 
 var ADS_COLLECTION = "ads";
+var PROJECT_COLLECTION = 'project'
 
 var app = express();
 app.use(express.static(__dirname + "/public"));
@@ -37,6 +38,8 @@ function handleError(res, reason, message, code) {
   res.status(code || 500).json({"error": message});
 }
 
+//========= ADS =========
+
 app.get("/ads", function(req, res) {
   db.collection(ADS_COLLECTION).find({}).toArray(function(err, docs) {
     if (err) {
@@ -48,12 +51,12 @@ app.get("/ads", function(req, res) {
 });
 
 app.post("/ads", function(req, res) {
-  var newContact = req.body;
-  newContact.createDate = new Date();
+  var newAds = req.body;
+  newAds.createDate = new Date();
 
-  db.collection(ADS_COLLECTION).insertOne(newContact, function(err, doc) {
+  db.collection(ADS_COLLECTION).insertOne(newAds, function(err, doc) {
     if (err) {
-      handleError(res, err.message, "Failed to create new contact.");
+      handleError(res, err.message, "Failed to create new ad.");
     } else {
       res.status(201).json(doc.ops[0]);
     }
@@ -63,7 +66,7 @@ app.post("/ads", function(req, res) {
 app.get("/ads/:id", function(req, res) {
   db.collection(ADS_COLLECTION).findOne({ _id: new ObjectID(req.params.id) }, function(err, doc) {
     if (err) {
-      handleError(res, err.message, "Failed to get contact");
+      handleError(res, err.message, "Failed to get ad");
     } else {
       res.status(200).json(doc);
     }
@@ -76,7 +79,7 @@ app.put("/ads/:id", function(req, res) {
 
   db.collection(ADS_COLLECTION).updateOne({_id: new ObjectID(req.params.id)}, updateDoc, function(err, doc) {
     if (err) {
-      handleError(res, err.message, "Failed to update contact");
+      handleError(res, err.message, "Failed to update ad");
     } else {
       res.status(204).end();
     }
@@ -86,7 +89,64 @@ app.put("/ads/:id", function(req, res) {
 app.delete("/ads/:id", function(req, res) {
   db.collection(ADS_COLLECTION).deleteOne({_id: new ObjectID(req.params.id)}, function(err, result) {
     if (err) {
-      handleError(res, err.message, "Failed to delete contact");
+      handleError(res, err.message, "Failed to delete ad");
+    } else {
+      res.status(204).end();
+    }
+  });
+});
+
+//=========  Project  =========
+
+app.get("/project", function(req,res){
+  db.collection(PROJECT_COLLECTION).find({}).toArray(function(err,doc){
+    if (err) {
+      handleError(res, err.message, "Failed to get projects.");
+    } else {
+      res.status(200).json(docs);
+    }
+  })
+})
+
+app.get("/project", function(req,res){
+  var newProject = req.body;
+  newProject.createDate = new Date()
+  db.collection(PROJECT_COLLECTION).insertOne(newProject, function(err,doc){
+    if(err){
+      handleError(res, err.message, "Failed to create new project.");
+    } else{
+      res.status(201).json(doc.op[0]);
+    }
+  })
+})
+
+app.get("/project/:id", function(req, res) {
+  db.collection(PROJECT_COLLECTION).findOne({ _id: new ObjectID(req.params.id) }, function(err, doc) {
+    if (err) {
+      handleError(res, err.message, "Failed to get project");
+    } else {
+      res.status(200).json(doc);
+    }
+  });
+});
+
+app.put("/project/:id", function(req, res) {
+  var updateDoc = req.body;
+  delete updateDoc._id;
+
+  db.collection(PROJECT_COLLECTION).updateOne({_id: new ObjectID(req.params.id)}, updateDoc, function(err, doc) {
+    if (err) {
+      handleError(res, err.message, "Failed to update project");
+    } else {
+      res.status(204).end();
+    }
+  });
+});
+
+app.delete("/project/:id", function(req, res) {
+  db.collection(PROJECT_COLLECTION).deleteOne({_id: new ObjectID(req.params.id)}, function(err, result) {
+    if (err) {
+      handleError(res, err.message, "Failed to delete project");
     } else {
       res.status(204).end();
     }
