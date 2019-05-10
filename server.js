@@ -2,13 +2,14 @@ var express = require("express");
 var path = require("path");
 var bodyParser = require("body-parser");
 var mongodb = require("mongodb");
+var cors = require('cors')
 var ObjectID = mongodb.ObjectID;
 
 var ADS_COLLECTION = "ads";
 var PROJECT_COLLECTION = 'project';
 
 var app = express();
-app.use(express.static(__dirname + "/public"));
+app.use(cors())
 app.use(bodyParser.json());
 
 // Create a database variable outside of the database connection callback to reuse the connection pool in your app.
@@ -52,7 +53,6 @@ app.get("/ads", function(req, res) {
 
 app.post("/ads", function(req, res) {
   var newAds = req.body;
-  newAds.createDate = new Date();
 
   db.collection(ADS_COLLECTION).insertOne(newAds, function(err, doc) {
     if (err) {
