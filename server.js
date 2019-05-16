@@ -60,23 +60,23 @@ mongodb.MongoClient.connect(dev_url, function (err, database) {
 
 //middleware
 
-app.use(function(req, res, next){
-  var auth = req.headers.authorization.split(' ')[1]
-  var decoded = base64decode(auth)
-  var username = base64decode(auth).split(':')[0]
-  var password = base64decode(auth).split(':')[1]
-  console.log(username)
-  console.log(password)
-  // if(username==='admin' && password==='admin')
-  //     next()
-  if(decoded === db.collection(USER_COLLECTION).find(detail=>
-    detail.user
-    )){
-    next()
-  }
-  else
-      res.json({'authenticated': false})
-})
+// app.use(function(req, res, next){
+//   var auth = req.headers.authorization.split(' ')[1]
+//   var decoded = base64decode(auth)
+//   var username = base64decode(auth).split(':')[0]
+//   var password = base64decode(auth).split(':')[1]
+//   console.log(username)
+//   console.log(password)
+//   // if(username==='admin' && password==='admin')
+//   //     next()
+//   if(decoded === db.collection(USER_COLLECTION).find(detail=>
+//     detail.user
+//     )){
+//     next()
+//   }
+//   else
+//       res.json({'authenticated': false})
+// })
 //middleware
 
 
