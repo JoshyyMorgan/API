@@ -4,13 +4,38 @@ var bodyParser = require("body-parser");
 var mongodb = require("mongodb");
 var cors = require('cors')
 var ObjectID = mongodb.ObjectID;
-
 var ADS_COLLECTION = "ads";
 var PROJECT_COLLECTION = 'project';
-
+var USER_COLLECTION = 'user'
 var app = express();
+const { base64encode, base64decode } = require('nodejs-base64');
+//testing auth0
+// var jwt = require('express-jwt');
+// var jwks = require('jwks-rsa');
+
+
+// var jwtCheck = jwt({
+//   secret: jwks.expressJwtSecret({
+//       cache: true,
+//       rateLimit: true,
+//       jwksRequestsPerMinute: 5,
+//       jwksUri: 'https://joshy.au.auth0.com/.well-known/jwks.json'
+// }),
+// audience: 'http://fathomless-escarpment-67497.herokuapp.com/ads/',
+// issuer: 'https://joshy.au.auth0.com/',
+// algorithms: ['RS256']
+// });
+
+// app.use(jwtCheck);
+
+// app.get('/authorized', function (req, res) {
+//     res.send('Secured Resource');
+// });
+
+//testing auth0
 app.use(cors())
 app.use(bodyParser.json());
+
 
 // Create a database variable outside of the database connection callback to reuse the connection pool in your app.
 var db;
@@ -32,6 +57,27 @@ mongodb.MongoClient.connect(dev_url, function (err, database) {
     console.log("App now running on port", port);
   });
 });
+
+//middleware
+
+app.use(function(req, res, next){
+  var auth = req.headers.authorization.split(' ')[1]
+  var decoded = base64decode(auth)
+  var username = base64decode(auth).split(':')[0]
+  var password = base64decode(auth).split(':')[1]
+  console.log(username)
+  console.log(password)
+  // if(username==='admin' && password==='admin')
+  //     next()
+  if(decoded === db.collection(USER_COLLECTION).find(detail=>
+    detail.user
+    )){
+    next()
+  }
+  else
+      res.json({'authenticated': false})
+})
+//middleware
 
 
 function handleError(res, reason, message, code) {
@@ -152,3 +198,15 @@ app.delete("/project/:id", function(req, res) {
     }
   });
 });
+
+//=======USER======
+
+app.get('/user',function(req,res){
+  db.collection(USER_COLLECTION).find({}).toArray(function(err,docs){
+    if (err) {
+      handleError(res, err.message, "Failed to get user.");
+    } else {
+      res.status(200).json(docs);
+    }
+  })
+})
