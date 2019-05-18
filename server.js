@@ -68,9 +68,9 @@ app.use(function(req, res, next){
   console.log(auth)
   console.log(username)
   console.log(password)
-  // if(username==='admin' && password==='admin')
+  if(username==='admin' && password==='admin'
   //     next()
-  if(auth === "YWRtaW46YWRtaW4="
+  // if(auth === "YWRtaW46YWRtaW4="
     // db.collection(USER_COLLECTION).find(detail=>detail.user) YWRtaW46YWRtaW4=
 
     ){
