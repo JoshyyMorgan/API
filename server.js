@@ -69,7 +69,7 @@ app.use(function(req, res, next){
   console.log(password)
   // if(username==='admin' && password==='admin')
   //     next()
-  if(auth === 'YWRtaW46YWRtaW4='
+  if(req.headers.authorization === 'YWRtaW46YWRtaW4='
     // db.collection(USER_COLLECTION).find(detail=>detail.user)
 
     ){
