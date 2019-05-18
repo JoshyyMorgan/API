@@ -61,16 +61,17 @@ mongodb.MongoClient.connect(dev_url, function (err, database) {
 //middleware
 
 app.use(function(req, res, next){
-  var auth = req.headers.authorization.split(' ')[1]
+  var auth = req.headers.authorization.split(" ")[1]
   var decoded = base64decode(auth)
   var username = base64decode(auth).split(':')[0]
   var password = base64decode(auth).split(':')[1]
+  console.log(auth)
   console.log(username)
   console.log(password)
   // if(username==='admin' && password==='admin')
   //     next()
-  if(req.headers.authorization === 'YWRtaW46YWRtaW4='
-    // db.collection(USER_COLLECTION).find(detail=>detail.user)
+  if(auth === "YWRtaW46YWRtaW4="
+    // db.collection(USER_COLLECTION).find(detail=>detail.user) YWRtaW46YWRtaW4=
 
     ){
     next()
